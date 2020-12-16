@@ -5,7 +5,7 @@ plugins {
 
 version '0.0.1-SNAPSHOT'
 
-project.ext.mainClassName = "me.retrodaredevil.jacksontest.program.SolarMain"
+project.ext.mainClassName = "me.retrodaredevil.jacksontest.program.Main"
 
 dependencies {
     api "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
