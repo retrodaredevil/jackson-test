@@ -1,0 +1,60 @@
+version "0.0.1-SNAPSHOT"
+description = """Jackson Test"""
+
+buildscript {
+    ext {
+        junit5Version = '5.7.0' // https://junit.org/junit5/
+        junit5PlatformVersion = '1.7.0'
+
+        jacksonVersion = '2.12.0' // https://github.com/FasterXML/jackson-databind/releases
+        shadowVersion = '6.1.0' // https://github.com/johnrengelman/shadow/releases
+    }
+}
+allprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        jcenter()
+        google()
+    }
+}
+
+subprojects {
+    apply plugin: 'java-library'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    repositories {
+        maven { url "https://jitpack.io" }
+        maven { url "https://repo.maven.apache.org/maven2" }
+    }
+    dependencies {
+        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junit5Version
+        testImplementation "org.junit.jupiter:junit-jupiter-params:$junit5Version"
+        testImplementation "org.junit.platform:junit-platform-commons:$junit5PlatformVersion"
+        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: junit5Version
+
+        // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
+        implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+        implementation 'org.jetbrains:annotations:15.0'
+    }
+    test {
+        useJUnitPlatform()
+    }
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile){
+            options.compilerArgs << "-Xlint:deprecation"
+        }
+    }
+}
+project(":client"){
+    apply plugin: 'java'
+    dependencies {
+    }
+}
+
+wrapper {
+    gradleVersion = '6.6.1'
+    distributionType = Wrapper.DistributionType.ALL
+}
